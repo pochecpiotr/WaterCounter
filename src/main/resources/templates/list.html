@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>List of your water</title>
+</head>
+<body>
+<h1>All water:</h1>
+<table border="1">
+    <tr>
+        <th>Quantity</th>
+        <th>Date</th>
+    </tr>
+    <tr th:each="water: ${waterList}">
+        <td th:text="${water.quantity}"></td>
+        <td th:text="${water.date}"></td>
+    </tr>
+</table>
+<a th:href="@{/}">Homepage</a>
+</body>
+</html>

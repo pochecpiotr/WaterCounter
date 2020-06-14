@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Water counter - add</title>
+</head>
+<body>
+    <h1>Add your water</h1>
+    <form th:action="@{/waterstats}" th:object="${waterModel}" method="post">
+        <p><input type="text" th:field="*{quantity}" placeholder="quantity" /></p>
+        <p><input type="submit" value="Add Water" /></p>
+    </form>
+</body>
+</html>
