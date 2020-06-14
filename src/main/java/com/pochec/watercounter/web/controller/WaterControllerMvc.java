@@ -4,21 +4,16 @@ import com.pochec.watercounter.model.User;
 import com.pochec.watercounter.model.Water;
 import com.pochec.watercounter.repository.UserRepository;
 import com.pochec.watercounter.repository.WaterRepository;
-import com.pochec.watercounter.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -57,9 +52,8 @@ public class WaterControllerMvc {
         List<Water> allWaterList = waterRepository.findAll();
         List<Water> waterList = new ArrayList<>();
         for (Water water: allWaterList) {
-            if (water.getUserId().equals(userid)) {
-                  waterList.add(water);
-
+            if (water.getUserId().equals(userid) && water.getDate().equals(LocalDate.now())) {
+                    waterList.add(water);
             }
         }
         model.addAttribute("waterList", waterList);
@@ -79,7 +73,9 @@ public class WaterControllerMvc {
         String username = getUsername();
         User user = userRepository.findByEmail(username);
         waterModel.setUserId(user.getId());
-        waterModel.setDate(LocalDate.now());
+        if (waterModel.getDate() == null) {
+            waterModel.setDate(LocalDate.now());
+        }
         waterRepository.save(waterModel);
         redirectAttr.addFlashAttribute("message", "Water added successfuly");
         return "redirect:/";

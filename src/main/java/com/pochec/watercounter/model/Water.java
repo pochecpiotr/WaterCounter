@@ -1,8 +1,9 @@
 package com.pochec.watercounter.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 public class Water {
@@ -12,6 +13,7 @@ public class Water {
     private Long id;
     private int quantity;
     private Long userId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     public Long getId() {

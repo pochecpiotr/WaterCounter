@@ -7,7 +7,8 @@
 <body>
     <h1>Add your water</h1>
     <form th:action="@{/waterstats}" th:object="${waterModel}" method="post">
-        <p><input type="text" th:field="*{quantity}" placeholder="quantity" /></p>
+        <p>Quantity <input type="text" th:field="*{quantity}" placeholder="liter" /></p>
+        <p>Date <input type="date" th:field="*{date}" placeholder="YYYY-MM-DD" /></p>
         <p><input type="submit" value="Add Water" /></p>
     </form>
 </body>
