@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"></meta>
+    <meta charset="UTF-8">
     <title>List of your water</title>
 </head>
 <body>
@@ -16,6 +16,7 @@
         <td th:text="${water.date}"></td>
     </tr>
 </table>
+<a href="#" th:href="@{/waterstats/daily}">See your daily stats</a>
 <a th:href="@{/}">Homepage</a>
 </body>
 </html>

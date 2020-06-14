@@ -37,24 +37,35 @@ public class WaterControllerMvc {
 
     @GetMapping("/user")
     public String listWater(Model model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
+        String username = getUsername();
         Long userid = userRepository.findByEmail(username).getId();
         List<Water> allWaterList = waterRepository.findAll();
         List<Water> waterList = new ArrayList<>();
         for (Water water: allWaterList) {
-            if (water.getUserId() == userid) {
+            if (water.getUserId().equals(userid)) {
                 waterList.add(water);
             }
         }
         model.addAttribute("waterList", waterList);
         return "list";
     }
+
+    @GetMapping("/daily")
+    public String listWaterToday(Model model) {
+        String username = getUsername();
+        Long userid = userRepository.findByEmail(username).getId();
+        List<Water> allWaterList = waterRepository.findAll();
+        List<Water> waterList = new ArrayList<>();
+        for (Water water: allWaterList) {
+            if (water.getUserId().equals(userid)) {
+                  waterList.add(water);
+
+            }
+        }
+        model.addAttribute("waterList", waterList);
+        return "listtoday";
+    }
+
 
     @GetMapping("/all")
     public String listWaterAll(Model model) {
@@ -65,6 +76,16 @@ public class WaterControllerMvc {
 
     @RequestMapping(method=RequestMethod.POST)
     public String addWater(@ModelAttribute Water waterModel, RedirectAttributes redirectAttr) {
+        String username = getUsername();
+        User user = userRepository.findByEmail(username);
+        waterModel.setUserId(user.getId());
+        waterModel.setDate(LocalDate.now());
+        waterRepository.save(waterModel);
+        redirectAttr.addFlashAttribute("message", "Water added successfuly");
+        return "redirect:/";
+    }
+
+    private String getUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
@@ -72,11 +93,6 @@ public class WaterControllerMvc {
         } else {
             username = principal.toString();
         }
-        User user = userRepository.findByEmail(username);
-        waterModel.setUserId(user.getId());
-        waterModel.setDate(LocalDate.now());
-        waterRepository.save(waterModel);
-        redirectAttr.addFlashAttribute("message", "Water added successfuly");
-        return "redirect:/";
+        return username;
     }
 }
