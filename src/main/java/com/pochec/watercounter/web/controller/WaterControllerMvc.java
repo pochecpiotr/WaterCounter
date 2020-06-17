@@ -60,7 +60,6 @@ public class WaterControllerMvc {
         return "listtoday";
     }
 
-
     @GetMapping("/all")
     public String listWaterAll(Model model) {
         List<Water> waterList = waterRepository.findAll();

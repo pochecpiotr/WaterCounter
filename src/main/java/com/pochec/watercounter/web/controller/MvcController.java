@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MvcController {
 
-
     @RequestMapping("/")
     public String home() {
         return "index";
@@ -21,4 +20,13 @@ public class MvcController {
         return "addwater";
     }
 
+    @GetMapping("deletewater")
+    public String deleteWater(Model model) {
+        model.addAttribute("waterModel", new Water());
+        return "deletewater";
+    }
+
+
+    @GetMapping("/error")
+    private String error() { return "error"; }
 }

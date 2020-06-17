@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Water {
@@ -46,6 +47,21 @@ public class Water {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Water water = (Water) o;
+        return quantity == water.quantity &&
+                Objects.equals(id, water.id) &&
+                Objects.equals(date, water.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, quantity, userId, date);
     }
 
     @Override
