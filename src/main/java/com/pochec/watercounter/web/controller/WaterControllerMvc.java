@@ -36,12 +36,15 @@ public class WaterControllerMvc {
         Long userid = userRepository.findByEmail(username).getId();
         List<Water> allWaterList = waterRepository.findAll();
         List<Water> waterList = new ArrayList<>();
+        int waterCount = 0;
         for (Water water: allWaterList) {
             if (water.getUserId().equals(userid)) {
                 waterList.add(water);
+                waterCount += water.getQuantity();
             }
         }
         model.addAttribute("waterList", waterList);
+        model.addAttribute("waterCount", waterCount);
         return "list";
     }
 
@@ -51,12 +54,15 @@ public class WaterControllerMvc {
         Long userid = userRepository.findByEmail(username).getId();
         List<Water> allWaterList = waterRepository.findAll();
         List<Water> waterList = new ArrayList<>();
+        int dailyCount = 0;
         for (Water water: allWaterList) {
             if (water.getUserId().equals(userid) && water.getDate().equals(LocalDate.now())) {
                     waterList.add(water);
+                    dailyCount += water.getQuantity();
             }
         }
         model.addAttribute("waterList", waterList);
+        model.addAttribute("dailyCount", dailyCount);
         return "listtoday";
     }
 
