@@ -42,7 +42,7 @@
                     <a class="nav-link" href="#" th:href="@{/waterstats/daily}">Your daily water</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/deletewater}">Delete water</a>
+                    <a class="nav-link" href="#" th:href="@{/water/delete}">Delete water</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/waterstats/all}">See all water stats</a>
@@ -59,11 +59,23 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12 text-center">
-            <h1>Delete your water</h1>
-            <form th:action="@{/water}" th:object="${waterModel}" method="post">
-                <p>Quantity <input type="text" th:field="*{quantity}" placeholder="liter" /></p>
-                <p>Date <input type="date" th:field="*{date}" placeholder="YYYY-MM-DD" /></p>
-                <p><input type="submit" value="Delete Water" /></p>
+            <h1>Delete your water:</h1>
+            <form action="#" method="post" th:action="@{/water}" th:object="${waterModel}">
+            <table border="1">
+                <tr>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Delete</th>
+                </tr>
+                <tr th:each="water: ${waterList}">
+                    <td th:text="${water.quantity}"></td>
+                    <td th:text="${water.date}"></td>
+                    <td>
+                        <input type="checkbox" th:name="idChecked" th:value="${water.getId()}">
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Delete" />
             </form>
         </div>
     </div>

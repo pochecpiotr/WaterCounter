@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,18 +29,29 @@ public class WaterControllerDelete {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping(method= RequestMethod.POST)
-    public String deleteWater(@ModelAttribute Water waterModel, RedirectAttributes redirectAttr) {
-        Water waterToDelete = waterModel;
+    @GetMapping("/delete")
+    public String listWaterToday(Model model) {
         String username = getUsername();
         Long userid = userRepository.findByEmail(username).getId();
-        List<Water> allWaterList = waterRepository.findByUserId(userid);
-        for (Water water : allWaterList) {
-            if (waterToDelete.getQuantity() == water.getQuantity()) {
-                if (waterToDelete.getDate().toString().equals(water.getDate().toString()))
-                    waterRepository.deleteById(water.getId());
-                    redirectAttr.addFlashAttribute("message", "Water deleted successfuly");
-                }
+        List<Water> allWaterList = waterRepository.findAll();
+        List<Water> waterList = new ArrayList<>();
+        for (Water water: allWaterList) {
+            if (water.getUserId().equals(userid)) {
+                waterList.add(water);
+            }
+        }
+        model.addAttribute("waterList", waterList);
+        return "deletewater";
+    }
+
+    @RequestMapping(method= RequestMethod.POST)
+    public String deleteWater(@RequestParam("idChecked") List<String> idwaters, RedirectAttributes redirectAttr) {
+        if (idwaters != null) {
+            for (String idwaterStr : idwaters) {
+                Long idwater = Long.parseLong(idwaterStr);
+                waterRepository.deleteById(idwater);
+                redirectAttr.addFlashAttribute("message", "Water deleted successfuly");
+            }
         }
         return "redirect:/";
     }
