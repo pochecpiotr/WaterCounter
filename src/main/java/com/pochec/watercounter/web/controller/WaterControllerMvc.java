@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,7 @@ public class WaterControllerMvc {
                 waterCount += water.getQuantity();
             }
         }
+        waterCount = waterCount/1000;
         model.addAttribute("waterList", waterList);
         model.addAttribute("waterCount", waterCount);
         return "list";
@@ -54,13 +54,14 @@ public class WaterControllerMvc {
         Long userid = userRepository.findByEmail(username).getId();
         List<Water> allWaterList = waterRepository.findAll();
         List<Water> waterList = new ArrayList<>();
-        int dailyCount = 0;
+        float dailyCount = 0;
         for (Water water: allWaterList) {
             if (water.getUserId().equals(userid) && water.getDate().equals(LocalDate.now())) {
                     waterList.add(water);
                     dailyCount += water.getQuantity();
             }
         }
+        dailyCount = dailyCount/1000;
         model.addAttribute("waterList", waterList);
         model.addAttribute("dailyCount", dailyCount);
         return "listtoday";
