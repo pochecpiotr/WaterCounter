@@ -35,7 +35,7 @@ public class WaterControllerMvc {
         Long userid = userRepository.findByEmail(username).getId();
         List<Water> allWaterList = waterRepository.findAll();
         List<Water> waterList = new ArrayList<>();
-        int waterCount = 0;
+        float waterCount = 0;
         for (Water water: allWaterList) {
             if (water.getUserId().equals(userid)) {
                 waterList.add(water);
